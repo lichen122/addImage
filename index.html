@@ -1,82 +1,130 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Add image to map</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-  <link rel="stylesheet" href="http://js.arcgis.com/3.14/dijit/themes/claro/claro.css">
-  <link rel="stylesheet" href="http://js.arcgis.com/3.14/esri/css/esri.css">
-  <link rel="stylesheet" href="layout.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-  <style>
-    html, body, #mapDiv {
-      padding: 0;
-      margin: 0;
-      height: 100%;
-    }
-  </style>
-  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script src="http://js.arcgis.com/3.14/"></script>
-  <script>
-    var map;
-    require([
-        "dojo/parser",
-        "dojo/ready",
-        "dijit/layout/BorderContainer",
-        "dijit/layout/ContentPane",
-        "dojo/dom",
-        "esri/map",
-        "esri/layers/MapImage","esri/layers/MapImageLayer",      
-        "dojo/dom-style", "dojo/domReady!"
-    ], function(
-        parser,
-        ready,
-        BorderContainer,
-        ContentPane,
-        dom,
-        Map, 
-        MapImage,MapImageLayer,
-        domStyle
-    ) {
-        parser.parse();
-        map = new Map("map", {
-          basemap: "gray",
-          center: [-79.933333,32.783333],
-          zoom: 2,
-          slider: false
-        });
-
-        // var mapImage = new MapImage({ 
-        //     'href': 'esri.jpg',
-        //     'extent':{'xmin': -79.733333, 'ymin': 32.783333, 'xmax': -80.933333, 'ymax': 33.783333}
-        // }); 
-
-        // var miLayer = new MapImageLayer(); 
-        // miLayer.addImage(mapImage); 
-        // map.addLayer(miLayer); 
-
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>Add Image</title>
+    <link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+     
+    </style>
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    
+    <script src="http://js.arcgis.com/3.13/"></script>
+    <script src="js/bootstrap/dropdown.js"></script>
+   
+    <script>
+     $(document).ready(function(){
+        $('.dropdown-toggle').dropdown()
     });
-  </script>
+      var map;
 
-</head>
-<body class="claro">
-  <div id="mainWindow" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline'" style="width:100%; height:100%;">
-      <div id="header" class="shadow roundedCorners" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
-        <div id="title">Image Adder</div>
-        <div id="subtitle"></div>
+      require(["esri/map","esri/layers/FeatureLayer", "dojo/domReady!"], function(Map,FeatureLayer) {
+        map = new Map("map", {
+          basemap: "gray",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+          center: [-118.401341,34.068918], // longitude, latitude
+          zoom: 20
+        });
+      	$(".basemap").click(function(){
+      		map.setBasemap(this.attributes.value.value);
+      	});
+      });
+   
+    </script>
+  </head>
+
+ <body > 
+  <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline', gutters:false" style="width:100%;height:100%;margin:0px;">
+    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
+      <div>
+        <nav class="navbar navbar-default" >
+          <div class="container-fluid">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Image Adder</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Basemap <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                  	<li><a href="#dropdown1" class="basemap" data-toggle="tab" aria-expanded="true" value="gray">Gray</a></li>
+                  	<li class="divider"></li>
+                  	<li><a href="#dropdown2" class="basemap" data-toggle="tab" aria-expanded="true" value="dark-gray">Dark-Gray</a></li>
+                  	<li class="divider"></li>
+                    <li ><a href="#dropdown3" class="basemap"data-toggle="tab" aria-expanded="false" value="streets">Streets</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#dropdown4" class="basemap" data-toggle="tab" aria-expanded="true" value="satellite">Satellite</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#dropdown5" class="basemap" data-toggle="tab" aria-expanded="true" value="hybrid">Hybrid</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#dropdown6" class="basemap" data-toggle="tab" aria-expanded="true" value="topo">Topo</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Image Adder <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <div class="panel panel-default addImagePanel">
+                    	<br/>
+                    	<div class="input-group">
+          					<span class="input-group-btn">
+            					<button class="btn btn-default" type="button">Upload</button>
+          					</span>
+          					<input type="text" class="form-control" placeholder="choose image to add">
+        				</div><br/>
+        				<div>
+        					<h7>xmin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        				</div><br/>
+        				<div>
+        					<h7>ymin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        				</div><br/>
+        				<div>
+        					<h7>xmax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        				</div><br/>
+        				<div>
+        					<h7>ymax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        				</div><br/>
+        				<button id="addBtn" class="btn btn-success center-block" type="button">Add on Map</button>
+        			</div>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Tools <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li class=""><a href="#dropdown1" data-toggle="tab" aria-expanded="false">Measure</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#dropdown2" data-toggle="tab" aria-expanded="true">Draw</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#dropdown2" data-toggle="tab" aria-expanded="true">Print</a></li>
+                  </ul>
+                </li>
+                
+              </ul>
+              <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <span class="glyphicon glyphicon-search" ></span>
+              </form>
+              
+            </div>
+          </div>
+        </nav>
       </div>
-      <div id="map" class="roundedCorners shadow" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'"></div>
-      <div id="rightPane" class="roundedCorners shadow" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right'" >
-        <div class="input-group">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Upload</button>
-          </span>
-          <input type="text" class="form-control" placeholder="choose image to add">
-        </div>
-      </div>
-    </div>
+    </div> 
+
+    <div id="map" dojotype="dijit/layout/ContentPane" data-dojo-props="region:'center'"></div>    
+  </div>
 </body>
 </html>
- 

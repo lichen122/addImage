@@ -3,6 +3,8 @@
   width: 100%;
   margin: 0;
   padding: 0;
+  position:absolute;
+ 
 }
 body {
   background-color: #FFF;
@@ -53,4 +55,12 @@ body {
   padding:5px;
   min-width:400px;
   background-color: rgb(134, 144, 144);
+  z-index:5;
+  position:absolute;
+  bottom:50px;
+  right:10px;
+}
+.roundedCorners {
+  border-radius: 10px;
+  box-shadow: 4px 4px 8px #adadad;
 }

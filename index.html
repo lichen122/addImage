@@ -14,13 +14,25 @@
     </style>
     <script src="js/jquery-1.11.2.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    
+    <script src="js/vendor/jquery.ui.widget.js"></script>
+	<script src="js/jquery.iframe-transport.js"></script>
+	<script src="js/jquery.fileupload.js"></script>
     <script src="http://js.arcgis.com/3.13/"></script>
     <script src="js/bootstrap/dropdown.js"></script>
+    
    
     <script>
-     $(document).ready(function(){
-        $('.dropdown-toggle').dropdown()
+    $(document).ready(function(){
+    	$('.dropdown-toggle').dropdown()
+    });
+
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('<p/>').text(file.name).appendTo(document.body);
+            });
+        }
     });
       var map;
 
@@ -33,6 +45,7 @@
       	$(".basemap").click(function(){
       		map.setBasemap(this.attributes.value.value);
       	});
+
       });
    
     </script>
@@ -73,33 +86,6 @@
                   </ul>
                 </li>
                 <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Image Adder <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <div class="panel panel-default addImagePanel">
-                    	<br/>
-                    	<div class="input-group">
-          					<span class="input-group-btn">
-            					<button class="btn btn-default" type="button">Upload</button>
-          					</span>
-          					<input type="text" class="form-control" placeholder="choose image to add">
-        				</div><br/>
-        				<div>
-        					<h7>xmin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
-        				</div><br/>
-        				<div>
-        					<h7>ymin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
-        				</div><br/>
-        				<div>
-        					<h7>xmax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
-        				</div><br/>
-        				<div>
-        					<h7>ymax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
-        				</div><br/>
-        				<button id="addBtn" class="btn btn-success center-block" type="button">Add on Map</button>
-        			</div>
-                  </ul>
-                </li>
-                <li class="dropdown">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Tools <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li class=""><a href="#dropdown1" data-toggle="tab" aria-expanded="false">Measure</a></li>
@@ -124,7 +110,30 @@
       </div>
     </div> 
 
-    <div id="map" dojotype="dijit/layout/ContentPane" data-dojo-props="region:'center'"></div>    
+    <div id="map" dojotype="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+    	<div class="roundedCorners addImagePanel">
+                    	<br/>
+                    	<div>
+          					<span class="btn btn-primary fileinput-button">
+        						<input id="fileupload" type="file" name="files[]" multiple>
+    						</span>
+        				</div><br/>
+        				<div>
+        					<h7>xmin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        				</div><br/>
+        				<div>
+        					<h7>ymin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        				</div><br/>
+        				<div>
+        					<h7>xmax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        				</div><br/>
+        				<div>
+        					<h7>ymax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        				</div><br/>
+        				<button id="addBtn" class="btn btn-success center-block" type="button">Add on Map</button>
+        			</div> 
+    </div>   
+
   </div>
 </body>
 </html>

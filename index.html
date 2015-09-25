@@ -9,16 +9,22 @@
     <link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="js/jsPanel-2.5.3/jspanel/jquery.jspanel.css"></script>
+    <link rel="stylesheet" href="js/jsPanel-2.5.3/vendor/jquery-ui-1.11.4.complete/jquery-ui.css"></script>
     <style>
      
     </style>
     <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/jsPanel-2.5.3/vendor/jquery-ui-1.11.4.complete/jquery-ui.js"></script>
+    <script src="js/jsPanel-2.5.3/vendor/mobile-detect.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="js/vendor/jquery.ui.widget.js"></script>
 	<script src="js/jquery.iframe-transport.js"></script>
 	<script src="js/jquery.fileupload.js"></script>
     <script src="http://js.arcgis.com/3.13/"></script>
     <script src="js/bootstrap/dropdown.js"></script>
+    <script src="js/jsPanel-2.5.3/jspanel/jquery.jspanel.js"></script>
+
     
    
     <script>
@@ -34,6 +40,8 @@
             });
         }
     });
+
+    
       var map;
 
       require(["esri/map","esri/layers/FeatureLayer", "dojo/domReady!"], function(Map,FeatureLayer) {
@@ -112,26 +120,26 @@
 
     <div id="map" dojotype="dijit/layout/ContentPane" data-dojo-props="region:'center'">
     	<div class="roundedCorners addImagePanel">
-                    	<br/>
-                    	<div>
-          					<span class="btn btn-primary fileinput-button">
-        						<input id="fileupload" type="file" name="files[]" multiple>
-    						</span>
-        				</div><br/>
-        				<div>
-        					<h7>xmin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
-        				</div><br/>
-        				<div>
-        					<h7>ymin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
-        				</div><br/>
-        				<div>
-        					<h7>xmax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
-        				</div><br/>
-        				<div>
-        					<h7>ymax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
-        				</div><br/>
-        				<button id="addBtn" class="btn btn-success center-block" type="button">Add on Map</button>
-        			</div> 
+            <br/>
+            <div>
+          		<span class="btn btn-primary fileinput-button">
+        	 		<input id="fileupload" type="file" name="files[]" multiple>
+    			</span>
+        	</div><br/>
+        	<div>
+        		<h7>xmin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+       		</div><br/>
+        	<div>
+        		<h7>ymin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        	</div><br/>
+       		<div>
+        		<h7>xmax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        	</div><br/>
+        	<div>
+        		<h7>ymax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        	</div><br/>
+        	<button id="addBtn" class="btn btn-success center-block" type="button">Add on Map</button>
+        </div> 
     </div>   
 
   </div>

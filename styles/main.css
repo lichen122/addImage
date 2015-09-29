@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   position:absolute;
- 
+
 }
 body {
   background-color: #FFF;
@@ -59,8 +59,19 @@ body {
   position:absolute;
   bottom:50px;
   right:10px;
+  height:auto;
 }
 .roundedCorners {
   border-radius: 10px;
   box-shadow: 4px 4px 8px #adadad;
+}
+.alert_none{
+  display:none;
+  height:auto !important;
+  overflow:visible;
+}
+.alert_block{
+  display:block;
+  height:auto !important;
+  overflow:visible;
 }

@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/main.css">
-   
+
     <script src="js/jquery-1.11.2.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="http://js.arcgis.com/3.13/"></script>
     <script src="js/bootstrap/dropdown.js"></script>
- 
+
     <script>
     $(document).ready(function(){
     	$('.dropdown-toggle').dropdown()
@@ -23,8 +23,8 @@
     var map;
 
     require(["esri/map",
-      	   	   "esri/layers/MapImage","esri/layers/MapImageLayer", 
-      	   	   "esri/layers/FeatureLayer", "dojo/domReady!"], 
+      	   	   "esri/layers/MapImage","esri/layers/MapImageLayer",
+      	   	   "esri/layers/FeatureLayer", "dojo/domReady!"],
       	function(Map,MapImage,MapImageLayer,FeatureLayer) {
         map = new Map("map", {
           basemap: "gray",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
@@ -36,25 +36,33 @@
       	});
 
       	$("#addBtn").click(function(){
-      		$('#fileupload').required = true;
       		var img = $('#fileupload')[0].files[0];
-      		var tempUrl = window.URL.createObjectURL(img);
-      		var mapImage = new MapImage({ 
-            	'href': tempUrl,
-            	'extent':{'xmin': -79.733333, 'ymin': 32.783333, 'xmax': -80.933333, 'ymax': 33.783333}
-        	}); 
-        	var miLayer = new MapImageLayer(); 
-       		miLayer.addImage(mapImage); 
-        	map.addLayer(miLayer); 
+          if(img){
+            $(".alert").addClass("alert_none");
+            $(".alert").removeClass("alert_block");
+            var tempUrl = window.URL.createObjectURL(img);
+            var mapImage = new MapImage({
+              'href': tempUrl,
+              'extent':{'xmin': -79.733333, 'ymin': 32.783333, 'xmax': -80.933333, 'ymax': 33.783333}
+            });
+            var miLayer = new MapImageLayer();
+            miLayer.addImage(mapImage);
+            map.addLayer(miLayer);
+          }else{
+            $(".alert").removeClass("alert_none");
+            $(".alert").addClass("alert_block");
+            $(".alert").append("<p>ERROR: Please choose an image to add!</p>");
+          }
+
       	})
-      	
+
 
     });
-   
+
     </script>
   </head>
 
- <body > 
+ <body >
   <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline', gutters:false" style="width:100%;height:100%;margin:0px;">
     <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
       <div>
@@ -98,7 +106,7 @@
                     <li><a href="#dropdown2" data-toggle="tab" aria-expanded="true">Print</a></li>
                   </ul>
                 </li>
-                
+
               </ul>
               <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
@@ -106,19 +114,19 @@
                 </div>
                 <span class="glyphicon glyphicon-search" ></span>
               </form>
-              
+
             </div>
           </div>
         </nav>
       </div>
-    </div> 
+    </div>
 
     <div id="map" dojotype="dijit/layout/ContentPane" data-dojo-props="region:'center'">
     	<div class="roundedCorners addImagePanel">
             <br/>
             <div>
           		<span class="btn btn-primary fileinput-button">
-        	 		<input id="fileupload" type="file" required>
+        	 		<input id="fileupload" type="file">
     			</span>
         	</div><br/>
         	<div>
@@ -133,9 +141,12 @@
         	<div>
         		<h7>ymax:</h4><input type="text" placeholder="33.783333"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
         	</div><br/>
-        	<input id="addBtn" class="btn btn-success center-block" type="submit">Add on Map</input>
-        </div> 
-    </div>   
+
+        	<button id="addBtn" class="btn btn-success center-block">Add on Map</button>
+          <div class="alert alert-danger alert_none" role="alert" ></div><br/>
+
+        </div>
+    </div>
 
   </div>
 </body>

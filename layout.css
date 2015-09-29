@@ -52,7 +52,7 @@ body {
 #rightPane{
   background-color:#E8E8E8;
   border:solid 2px #B8B8B8;
-  margin:5px; 
+  margin:5px;
   width:20%;
 }
 #map {
@@ -61,3 +61,4 @@ body {
   margin:5px;
   padding:0;
 }
+

@@ -9,52 +9,47 @@
     <link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="js/jsPanel-2.5.3/jspanel/jquery.jspanel.css"></script>
-    <link rel="stylesheet" href="js/jsPanel-2.5.3/vendor/jquery-ui-1.11.4.complete/jquery-ui.css"></script>
-    <style>
-     
-    </style>
+   
     <script src="js/jquery-1.11.2.min.js"></script>
-    <script src="js/jsPanel-2.5.3/vendor/jquery-ui-1.11.4.complete/jquery-ui.js"></script>
-    <script src="js/jsPanel-2.5.3/vendor/mobile-detect.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="js/vendor/jquery.ui.widget.js"></script>
-	<script src="js/jquery.iframe-transport.js"></script>
-	<script src="js/jquery.fileupload.js"></script>
     <script src="http://js.arcgis.com/3.13/"></script>
     <script src="js/bootstrap/dropdown.js"></script>
-    <script src="js/jsPanel-2.5.3/jspanel/jquery.jspanel.js"></script>
-
-    
-   
+ 
     <script>
     $(document).ready(function(){
     	$('.dropdown-toggle').dropdown()
     });
 
-    $('#fileupload').fileupload({
-        dataType: 'json',
-        done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo(document.body);
-            });
-        }
-    });
+    var map;
 
-    
-      var map;
-
-      require(["esri/map","esri/layers/FeatureLayer", "dojo/domReady!"], function(Map,FeatureLayer) {
+    require(["esri/map",
+      	   	   "esri/layers/MapImage","esri/layers/MapImageLayer", 
+      	   	   "esri/layers/FeatureLayer", "dojo/domReady!"], 
+      	function(Map,MapImage,MapImageLayer,FeatureLayer) {
         map = new Map("map", {
           basemap: "gray",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
-          center: [-118.401341,34.068918], // longitude, latitude
-          zoom: 20
+          center: [-79.933333,32.783333], // longitude, latitude
+          zoom: 9
         });
       	$(".basemap").click(function(){
       		map.setBasemap(this.attributes.value.value);
       	});
 
-      });
+      	$("#addBtn").click(function(){
+      		$('#fileupload').required = true;
+      		var img = $('#fileupload')[0].files[0];
+      		var tempUrl = window.URL.createObjectURL(img);
+      		var mapImage = new MapImage({ 
+            	'href': tempUrl,
+            	'extent':{'xmin': -79.733333, 'ymin': 32.783333, 'xmax': -80.933333, 'ymax': 33.783333}
+        	}); 
+        	var miLayer = new MapImageLayer(); 
+       		miLayer.addImage(mapImage); 
+        	map.addLayer(miLayer); 
+      	})
+      	
+
+    });
    
     </script>
   </head>
@@ -123,22 +118,22 @@
             <br/>
             <div>
           		<span class="btn btn-primary fileinput-button">
-        	 		<input id="fileupload" type="file" name="files[]" multiple>
+        	 		<input id="fileupload" type="file" required>
     			</span>
         	</div><br/>
         	<div>
-        		<h7>xmin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        		<h7>xmin:</h4><input type="text" placeholder="-79.733333"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
        		</div><br/>
         	<div>
-        		<h7>ymin:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        		<h7>ymin:</h4><input type="text" placeholder="32.783333"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
         	</div><br/>
        		<div>
-        		<h7>xmax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        		<h7>xmax:</h4><input type="text" placeholder="-80.933333"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
         	</div><br/>
         	<div>
-        		<h7>ymax:</h4><input type="text" placeholder="input here"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        		<h7>ymax:</h4><input type="text" placeholder="33.783333"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
         	</div><br/>
-        	<button id="addBtn" class="btn btn-success center-block" type="button">Add on Map</button>
+        	<input id="addBtn" class="btn btn-success center-block" type="submit">Add on Map</input>
         </div> 
     </div>   
 

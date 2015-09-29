@@ -75,3 +75,12 @@ body {
   height:auto !important;
   overflow:visible;
 }
+
+.dark{
+  background-color:black;
+}
+
+.btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open>.dropdown-toggle.btn-primary{
+  background-color: #8893B6;
+  border-color:#8893B6;
+}

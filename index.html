@@ -20,12 +20,16 @@
     	$('.dropdown-toggle').dropdown()
     });
 
-    var map;
+    var map,flag;
 
     require(["esri/map",
       	   	   "esri/layers/MapImage","esri/layers/MapImageLayer",
-      	   	   "esri/layers/FeatureLayer", "dojo/domReady!"],
-      	function(Map,MapImage,MapImageLayer,FeatureLayer) {
+      	   	   "esri/layers/FeatureLayer", 
+      	   	   "esri/geometry/webMercatorUtils",
+      	   	   "esri/geometry/Point","esri/graphic",
+      	   	   "esri/symbols/SimpleMarkerSymbol","esri/symbols/PictureMarkerSymbol",
+      	   	   "dojo/domReady!"],
+      	function(Map,MapImage,MapImageLayer,FeatureLayer,webMercatorUtils,Point,graphic,SimpleMarkerSymbol,PictureMarkerSymbol) {
         map = new Map("map", {
           basemap: "gray",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
           center: [-79.933333,32.783333], // longitude, latitude
@@ -43,7 +47,7 @@
             var tempUrl = window.URL.createObjectURL(img);
             var mapImage = new MapImage({
               'href': tempUrl,
-              'extent':{'xmin': -79.733333, 'ymin': 32.783333, 'xmax': -80.933333, 'ymax': 33.783333}
+              'extent':{'xmin': $('#xmin').val(), 'ymin': $('#ymin').val(), 'xmax': $('#xmax').val(), 'ymax': $('#ymax').val()}
             });
             var miLayer = new MapImageLayer();
             miLayer.addImage(mapImage);
@@ -54,10 +58,54 @@
             $(".alert").append("<p>ERROR: Please choose an image to add!</p>");
           }
 
-      	})
+      	});
 
+      	$("#setMin").click(function(){
+      		$("#setMin").text("click on the map");
+      		map.setMapCursor("crosshair");
+      		flag = "min";
+      		
+      	});
 
-    });
+      	$("#setMax").click(function(){
+      		$("#setMax").text("click on the map");
+      		map.setMapCursor("crosshair");
+      		flag = "max";
+      	});
+
+		map.on("click",function(evt){	
+      			
+      			var location_clicked = webMercatorUtils.xyToLngLat(evt.mapPoint.x,evt.mapPoint.y);
+      			var location_graphic;
+      			
+      			if(flag == "min"){
+      				$('#xmin').val(location_clicked[0]);
+      				$('#ymin').val(location_clicked[1]);
+      				$("#setMin").text("Set min point on Map");
+      				location_graphic = new graphic(evt.mapPoint,new PictureMarkerSymbol("images/redpin.png",70,70),{"id":"red"});
+      				for(var i=0;i<map.graphics.graphics.length;i++){
+      					if(map.graphics.graphics[i].attributes&& map.graphics.graphics[i].attributes["id"] == "red"){
+      						map.graphics.remove(map.graphics.graphics[i]);
+      					}
+      				}
+      			}
+      			if(flag == "max"){
+      				$('#xmax').val(location_clicked[0]);
+      				$('#ymax').val(location_clicked[1]);
+      				$("#setMax").text("Set max point on Map");
+      				location_graphic = new graphic(evt.mapPoint,new PictureMarkerSymbol("images/greenpin.png",50,50),{"id":"green"});
+      				for(var i=0;i<map.graphics.graphics.length;i++){
+      					if(map.graphics.graphics[i].attributes && map.graphics.graphics[i].attributes["id"] == "green"){
+      						map.graphics.remove(map.graphics.graphics[i]);
+      					}
+      				}
+      			}  
+      			flag = "";
+      			map.graphics.add(location_graphic);    			
+      			map.setMapCursor("default");
+
+      		})
+    	});
 
     </script>
   </head>
@@ -130,20 +178,20 @@
     			</span>
         	</div><br/>
         	<div>
-        		<h7>xmin:</h4><input type="text" placeholder="-79.733333"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        		<h7>xmin:</h4><input id="xmin" type="text" placeholder="-79.733333" value="-79.733333"></input> 
        		</div><br/>
         	<div>
-        		<h7>ymin:</h4><input type="text" placeholder="32.783333"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        		<h7>ymin:</h4><input id="ymin" type="text" placeholder="32.783333" value="32.783333"></input> Or <button id="setMin" class="btn btn-primary" type="button">Set min point on Map</button>
         	</div><br/>
        		<div>
-        		<h7>xmax:</h4><input type="text" placeholder="-80.933333"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        		<h7>xmax:</h4><input id="xmax" type="text" placeholder="-80.933333" value="-80.933333"></input> 
         	</div><br/>
         	<div>
-        		<h7>ymax:</h4><input type="text" placeholder="33.783333"></input> Or <button class="btn btn-primary" type="button">Click on Map</button>
+        		<h7>ymax:</h4><input id="ymax" type="text" placeholder="33.783333" value="33.783333"></input> Or <button id="setMax" class="btn btn-primary" type="button">Set max point on Map</button>
         	</div><br/>
 
         	<button id="addBtn" class="btn btn-success center-block">Add on Map</button>
-          <div class="alert alert-danger alert_none" role="alert" ></div><br/>
+          	<div class="alert alert-danger alert_none" role="alert" ></div><br/>
 
         </div>
     </div>

@@ -28,13 +28,21 @@
       	   	   "esri/geometry/webMercatorUtils",
       	   	   "esri/geometry/Point","esri/graphic",
       	   	   "esri/symbols/SimpleMarkerSymbol","esri/symbols/PictureMarkerSymbol",
+      	   	   "esri/dijit/Search",
+      	   	   "esri/geometry/Extent",
       	   	   "dojo/domReady!"],
-      	function(Map,MapImage,MapImageLayer,FeatureLayer,webMercatorUtils,Point,graphic,SimpleMarkerSymbol,PictureMarkerSymbol) {
+      	function(Map,MapImage,MapImageLayer,FeatureLayer,webMercatorUtils,Point,graphic,SimpleMarkerSymbol,PictureMarkerSymbol,Search,Extent) {
         map = new Map("map", {
           basemap: "gray",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
           center: [-79.933333,32.783333], // longitude, latitude
           zoom: 9
         });
+
+        var s = new Search({
+            map: map
+        }, "search");
+        s.startup();
+
       	$(".basemap").click(function(){
       		map.setBasemap(this.attributes.value.value);
       	});
@@ -82,6 +90,7 @@
       				$('#xmin').val(location_clicked[0]);
       				$('#ymin').val(location_clicked[1]);
       				$("#setMin").text("Set min point on Map");
+      				$("#setMin").blur();
       				location_graphic = new graphic(evt.mapPoint,new PictureMarkerSymbol("images/redpin.png",70,70),{"id":"red"});
       				for(var i=0;i<map.graphics.graphics.length;i++){
       					if(map.graphics.graphics[i].attributes&& map.graphics.graphics[i].attributes["id"] == "red"){
@@ -93,6 +102,7 @@
       				$('#xmax').val(location_clicked[0]);
       				$('#ymax').val(location_clicked[1]);
       				$("#setMax").text("Set max point on Map");
+					$("#setMax").blur();
       				location_graphic = new graphic(evt.mapPoint,new PictureMarkerSymbol("images/greenpin.png",50,50),{"id":"green"});
       				for(var i=0;i<map.graphics.graphics.length;i++){
       					if(map.graphics.graphics[i].attributes && map.graphics.graphics[i].attributes["id"] == "green"){
@@ -103,9 +113,13 @@
       			flag = "";
       			map.graphics.add(location_graphic);    			
       			map.setMapCursor("default");
+      			// var extent = new Extent($('#xmin').val(),$('#ymin').val(),$('#xmax').val(),$('#ymax').val(),map.spatialReference);
+      			// map.centerAt(extent.getCenter());
+      			// map.setZoom(6);
 
-      		})
-    	});
+      	});
+	
+    });
 
     </script>
   </head>
@@ -147,20 +161,17 @@
                 <li class="dropdown">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Tools <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li class=""><a href="#dropdown1" data-toggle="tab" aria-expanded="false">Measure</a></li>
-                    <li class="divider"></li>
                     <li><a href="#dropdown2" data-toggle="tab" aria-expanded="true">Draw</a></li>
                     <li class="divider"></li>
-                    <li><a href="#dropdown2" data-toggle="tab" aria-expanded="true">Print</a></li>
+                    <li><a id="print" href="#dropdown2" data-toggle="tab" aria-expanded="true">Print</a></li>
                   </ul>
                 </li>
 
               </ul>
               <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Search">
+                  <input id="search" type="text" class="form-control" placeholder="Search">
                 </div>
-                <span class="glyphicon glyphicon-search" ></span>
               </form>
 
             </div>
@@ -170,6 +181,9 @@
     </div>
 
     <div id="map" dojotype="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+    	<!-- <div class="roundedCorners printPanel">
+    		<div id="printButton">Print</div>
+    	</div> -->
     	<div class="roundedCorners addImagePanel">
             <br/>
             <div>

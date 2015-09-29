@@ -50,6 +50,17 @@ body {
 .dropdown-menu{
   background-color: rgb(134, 144, 144);
 }
+.printPanel{
+  margin:5px;
+  padding:5px;
+  min-width:400px;
+  background-color: rgb(134, 144, 144);
+  z-index:5;
+  position:absolute;
+  top:50px;
+  right:10px;
+  height:auto;
+}
 .addImagePanel{
   margin:5px;
   padding:5px;

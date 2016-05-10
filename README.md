@@ -1,3 +1,5 @@
+Try it: http://lichen122.github.io/addImage/
+
 This is an example show you add to directly add image or restaer data onto the map without the need to publishing the image as an imageservices.
 
 Steps:
